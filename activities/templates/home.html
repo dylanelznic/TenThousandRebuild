@@ -11,7 +11,7 @@
 			<input name="item_text" id="id_new_activity" placeholder="Enter a new activity" />
 			{% csrf_token %}
 		</form>
-		<header>{{ new_item_text }}</header>
+		<header>{{ item.text }}</header>
 	</body>
 
 </html>
