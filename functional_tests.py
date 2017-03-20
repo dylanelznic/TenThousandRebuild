@@ -51,7 +51,6 @@ class NewVisitorTest(unittest.TestCase):
 
 		self.fail('Finish writing the functional test!')
 
-
 		# The User hits start and sees the timer running
 
 		# The User hits stop and sees the timer stop at the current time
