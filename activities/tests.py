@@ -29,7 +29,7 @@ class HomePageTest(TestCase):
 		response = self.client.post('/', data={'item_text': 'A new activity item'})
 		
 		self.assertEqual(response.status_code, 302)
-		self.assertEqual(response['location'], '/')
+		self.assertEqual(response['location'], '/activities/the-only-activity-in-the-world/')
 
 	def test_only_saves_items_when_necessary(self):
 		self.client.get('/')
