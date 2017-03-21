@@ -18,4 +18,6 @@ from activities import views
 
 urlpatterns = [
     url(r'^$', views.home_page, name='home'),
+    url(r'activities/the-only-activity-in-the-world/$', views.view_activity,
+    	name='view_activity'),
 ]

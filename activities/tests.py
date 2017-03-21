@@ -53,6 +53,13 @@ class LiveViewTest(TestCase):
 	def test_displays_activity(self):
 		Activity.objects.create(text='Dancing')
 
-		response = self.client.get('/activites/the-only-activity-in-the-world/')
+		response = self.client.get('/activities/the-only-activity-in-the-world/')
 
 		self.assertContains(response, 'Dancing')
+
+		## BOOKMARK: Chapter 6
+		## Taking a first, self-contained step: one new URL
+
+	def test_uses_activity_template(self):
+		response = self.client.get('/activities/the-only-activity-in-the-world/')
+		self.assertTemplateUsed(response, 'activity.html')

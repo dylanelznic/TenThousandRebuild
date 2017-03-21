@@ -8,5 +8,8 @@ def home_page(request):
 		Activity.objects.create(text=request.POST['activity_text'])
 		return redirect('/activities/the-only-activity-in-the-world/')
 
+	return render(request, 'home.html')
+
+def view_activity(request):
 	activity = Activity.objects.last()
-	return render(request, 'home.html', {'activity': activity})
+	return render(request, 'activity.html', {'activity': activity})
