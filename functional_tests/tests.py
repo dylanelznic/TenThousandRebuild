@@ -40,7 +40,6 @@ class NewVisitorTest(LiveServerTestCase):
 		# When the user hits enter, the page updates, and now the page has 
 		# a header, "Programming"
 		inputbox.send_keys(Keys.ENTER)
-		time.sleep(1)
 
 		activity_header_text = self.browser.find_element_by_tag_name('header').text
 		self.assertIn('Programming', activity_header_text,
@@ -62,3 +61,54 @@ class NewVisitorTest(LiveServerTestCase):
 		# still on the timer
 
 		# Satisfied, the User starts the timer again and returns to programming
+
+	def test_multiple_users_can_start_activities_at_different_urls(self):
+
+		# Smino starts a new actvity
+		self.browser.get(self.live_server_url)
+		inputbox = self.browser.find_element_by_id('id_new_activity')
+		inputbox.send_keys('Rapping')
+		inputbox.send_keys(Keys.ENTER)
+
+		activity_header_text = self.browser.find_element_by_tag_name('header').text
+		self.assertIn('Rapping', activity_header_text,
+			f"New activity did not appear in <header>. Contents were:\n{activity_header_text}"
+		)
+
+		# Smino notices that their activity has a unique URL
+		smino_activity_url = self.browser.current_url
+		self.assertRegex(smino_activity_url, '/activities/.+')
+
+		# Now, a new user, Monte comes along to the site
+
+		## We use a new browser session to make sure that no information
+		## of the first user is coming through from cookies etc
+		self.browser.quit()
+		self.browser = webdriver.Chrome()
+
+		# Monte visits the home page. There is no sign of the Smino's activity
+		self.browser.get(self.live_server_url)
+		page_text = self.browser.find_element_by_tag_name('body').text
+		self.assertNotIn('Rapping', page_text)
+
+		# Monte starts a new activity by entering a new item.
+		inputbox = self.browser.find_element_by_id('id_new_activity')
+		inputbox.send_keys('Producing')
+		inputbox.send_keys(Keys.ENTER)
+
+		activity_header_text = self.browser.find_element_by_tag_name('header').text
+		self.assertIn('Producing', activity_header_text,
+			f"New activity did not appear in <header>. Contents were:\n{activity_header_text}"
+			)
+
+		# Monte gets his own unique URL
+		monte_activity_url = self.browser.current_url
+		self.assertRegex(monte_activity_url, '/activities/.+')
+		self.assertNotEqual(monte_activity_url, smino_activity_url)
+
+		# Again, there is no trace of Smino's activity
+		page_text = self.browser.find_element_by_tag_name('body').text
+		self.assertNotIn('Rapping', page_text)
+		self.assertIn('Producing', page_text)
+
+		# Satisfied, the pair get back to work
