@@ -7,11 +7,7 @@
 	<body>
 		<h1>Progress Tracker</h1>
 
-		<form method="POST" action="/activities/new">
-			<input name="activity_text" id="id_new_activity" placeholder="Enter a new activity" />
-			{% csrf_token %}
-		</form>
-		<header>{{ activity.text }}</header>
+		<header><h3>{{ activity.text }}</h3></header>
 	</body>
 
 </html>
