@@ -19,6 +19,5 @@ from activities import views
 urlpatterns = [
     url(r'^$', views.home_page, name='home'),
     url(r'activities/new$', views.new_activity, name='new_activity'),
-    url(r'activities/the-only-activity-in-the-world/$', views.view_activity,
-    	name='view_activity'),
+    url(r'activities/(\d+)/$', views.view_activity, name='view_activity'),
 ]

@@ -27,9 +27,9 @@ class HomePageTest(TestCase):
 
 	def test_redirects_after_POST(self):
 		response = self.client.post('/', data={'activity_text': 'A new activity'})
-		
-		self.assertEqual(response.status_code, 302)
-		self.assertEqual(response['location'], '/activities/the-only-activity-in-the-world/')
+		new_activity = Activity.objects.last()
+
+		self.assertRedirects(response, f'/activities/{new_activity.id}/')		
 
 	def test_only_saves_activity_when_necessary(self):
 		self.client.get('/')
@@ -51,18 +51,29 @@ class ActivityModelTest(TestCase):
 class LiveViewTest(TestCase):
 
 	def test_displays_activity(self):
-		Activity.objects.create(text='Dancing')
+		Activity.objects.create(text='some_activity')
+		new_activity = Activity.objects.last()
+		response = self.client.get(f'/activities/{new_activity.id}/')
 
-		response = self.client.get('/activities/the-only-activity-in-the-world/')
-
-		self.assertContains(response, 'Dancing')
-
-		## BOOKMARK: Chapter 6
-		## Taking a first, self-contained step: one new URL
+		self.assertContains(response, 'some_activity')
 
 	def test_uses_activity_template(self):
-		response = self.client.get('/activities/the-only-activity-in-the-world/')
+		Activity.objects.create(text='some_activity')
+		new_activity = Activity.objects.last()
+		response = self.client.get(f'/activities/{new_activity.id}/')
+		
 		self.assertTemplateUsed(response, 'activity.html')
+
+	def test_unique_URLS__for_diff_activities(self):
+		Activity.objects.create(text='Rapping')
+		correct_activity = Activity.objects.last()
+
+		response = self.client.get(f'/activities/{correct_activity.id}/')
+
+		self.assertContains(response, 'Rapping')
+		self.assertNotContains(response, 'Producing')
+		# FIX THIS!
+
 
 class NewActivityTest(TestCase):
 
@@ -74,4 +85,9 @@ class NewActivityTest(TestCase):
 
 	def test_redirects_after_POST(self):
 		response = self.client.post('/activities/new', data={'activity_text': 'A new activity'})
-		self.assertRedirects(response, '/activities/the-only-activity-in-the-world/')
+		new_activity = Activity.objects.last()
+
+		self.assertRedirects(response, f'/activities/{new_activity.id}/')
+
+
+#### BOOKMARK Adjusting new_list to the New World

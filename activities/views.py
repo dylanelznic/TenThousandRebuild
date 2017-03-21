@@ -7,9 +7,9 @@ def home_page(request):
 	return render(request, 'home.html')
 
 def new_activity(request):
-	Activity.objects.create(text=request.POST['activity_text'])
-	return redirect('/activities/the-only-activity-in-the-world/')
+	new_activity = Activity.objects.create(text=request.POST['activity_text'])
+	return redirect(f'/activities/{new_activity.id}/')
 
-def view_activity(request):
-	activity = Activity.objects.last()
+def view_activity(request, activity_id):
+	activity = Activity.objects.get(id=activity_id)
 	return render(request, 'activity.html', {'activity': activity})
