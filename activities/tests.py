@@ -18,7 +18,7 @@ class HomePageTest(TestCase):
 		response = self.client.get('/')
 		self.assertTemplateUsed(response, 'home.html')
 
-	def test_can_save_a_POST_request(self):
+	"""def test_can_save_a_POST_request(self):
 		response = self.client.post('/', data={'activity_text': 'A new activity'})
 
 		self.assertEqual(Activity.objects.count(), 1)
@@ -33,7 +33,7 @@ class HomePageTest(TestCase):
 
 	def test_only_saves_activity_when_necessary(self):
 		self.client.get('/')
-		self.assertEqual(Activity.objects.count(), 0)
+		self.assertEqual(Activity.objects.count(), 0)"""
 
 class ActivityModelTest(TestCase):
 
@@ -63,3 +63,15 @@ class LiveViewTest(TestCase):
 	def test_uses_activity_template(self):
 		response = self.client.get('/activities/the-only-activity-in-the-world/')
 		self.assertTemplateUsed(response, 'activity.html')
+
+class NewActivityTest(TestCase):
+
+	def test_can_save_a_POST_request(self):
+		self.client.post('/activities/new', data={'activity_text': 'A new activity'})
+		self.assertEqual(Activity.objects.count(), 1)
+		new_activity = Activity.objects.first()
+		self.assertEqual(new_activity.text, 'A new activity')
+
+	def test_redirects_after_POST(self):
+		response = self.client.post('/activities/new', data={'activity_text': 'A new activity'})
+		self.assertRedirects(response, '/activities/the-only-activity-in-the-world/')
