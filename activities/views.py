@@ -1,12 +1,12 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from activities.models import Item
+from activities.models import Activity
 
 # Create your views here.
 def home_page(request):
 	if request.method == 'POST':
-		Item.objects.create(text=request.POST['item_text'])
-		return redirect('/')
+		Activity.objects.create(text=request.POST['activity_text'])
+		return redirect('/activities/the-only-activity-in-the-world/')
 
-	item = Item.objects.last()
-	return render(request, 'home.html', {'item': item})
+	activity = Activity.objects.last()
+	return render(request, 'home.html', {'activity': activity})

@@ -91,7 +91,7 @@ class NewVisitorTest(LiveServerTestCase):
 		page_text = self.browser.find_element_by_tag_name('body').text
 		self.assertNotIn('Rapping', page_text)
 
-		# Monte starts a new activity by entering a new item.
+		# Monte starts a new activity by entering a new activity
 		inputbox = self.browser.find_element_by_id('id_new_activity')
 		inputbox.send_keys('Producing')
 		inputbox.send_keys(Keys.ENTER)

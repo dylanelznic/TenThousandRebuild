@@ -1,5 +1,5 @@
 from django.db import models
 
 # Create your models here.
-class Item(models.Model):
+class Activity(models.Model):
 	text = models.TextField(default='')
