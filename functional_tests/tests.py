@@ -1,9 +1,10 @@
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
 import unittest
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
 
 	def setUp(self):
 		self.browser = webdriver.Chrome()
@@ -15,7 +16,7 @@ class NewVisitorTest(unittest.TestCase):
 
 		# User has been wanting to keep track of how long they have been programming. 
 		# User finds tenthousand and checks out its homepage
-		self.browser.get('http://localhost:8000')
+		self.browser.get(self.live_server_url)
 
 		# User notices the page title and header mention progress tracker functionality
 		self.assertIn('Ten Thousand', self.browser.title)
@@ -61,6 +62,3 @@ class NewVisitorTest(unittest.TestCase):
 		# still on the timer
 
 		# Satisfied, the User starts the timer again and returns to programming
-
-if __name__ == '__main__':
-	unittest.main(warnings='ignore')
